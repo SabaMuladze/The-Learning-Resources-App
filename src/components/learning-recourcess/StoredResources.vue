@@ -13,7 +13,7 @@ export default{
             
         }
     },
-    props:['resources'],
+    inject:['resources'],
     components:{
         LearningResource
     }
