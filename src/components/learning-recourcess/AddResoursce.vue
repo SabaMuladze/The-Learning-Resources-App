@@ -1,17 +1,26 @@
 <template>
+    <base-dialog v-if="inputIsInvalid" title="Invalid Input">
+<template #default>
+    <p>Unfortunately, at least one input value is invalid</p>
+    <p>Please check all inputs and make sure that you entered at least few characters into each input field </p>
+</template>
+<template #actions>
+    <base-button @click="hideDialog">Okay</base-button>
+</template>
+</base-dialog>
     <base-card>
-    <form >
+    <form @submit.prevent="addResource">
 <div class="form-control">
 <label for="title">Title</label>
-<input id="title" name="title" type="text">
+<input id="title" name="title" type="text" v-model="title">
 </div>
 <div class="form-control">
 <label for="description">Description</label>
-<textarea name="description" id="description" rows="3"></textarea>
+<textarea name="description" id="description" rows="3" v-model="description"></textarea>
 </div>
 <div class="form-control">
 <label for="link">Link</label>
-<input type="url" name="link" id="link">
+<input type="url" name="link" id="link" v-model="link">
 </div>
 <div>
     <base-button type="submit">Add Resource</base-button>
@@ -22,7 +31,37 @@
 
 <script>
 export default{
+data() {
+    return {
+        title:'',
+        description:'',
+        link:'',
+        inputIsInvalid: false
+    }
+},
+inject:['resources'],
+methods:{
+    addResource(){
+        const resource = {
+            id:this.title + Math.random(),
+            title: this.title,
+            description: this.description,
+            link:this.link,
+        }
 
+        if (this.title.trim() === '' ||this.description.trim() === ''|| this.link.trim() ==='') {
+            this.inputIsInvalid = true
+        }
+        else{
+            this.inputIsInvalid = false
+            this.resources.unshift(resource)
+        }        
+        console.log(this.inputIsInvalid);
+    },
+    hideDialog(){
+        this.inputIsInvalid = false
+    }
+}
 }
 </script>
 
