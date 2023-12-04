@@ -5,7 +5,6 @@
     </base-card>
     <keep-alive>
         <component :is="selectedTab"></component>
-
     </keep-alive>
 </template>
 
@@ -34,12 +33,18 @@ export default{
     },
     provide(){
 return{
-    resources: this.storedResources
+    resources: this.storedResources,
+    deleteRes: this.deleteResource,
+    setSelectedTab: this.setSelectedTab
 }
     },
     methods:{
         setSelectedTab(tab){
             this.selectedTab = tab
+        },
+        deleteResource(resId){
+         const resIndex = this.storedResources.findIndex(res => res.id === resId)
+         this.storedResources.splice(resIndex,1)
         }
     },
     components:{

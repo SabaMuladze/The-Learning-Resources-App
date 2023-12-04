@@ -1,5 +1,5 @@
 <template>
-    <base-dialog v-if="inputIsInvalid" title="Invalid Input">
+    <base-dialog v-if="inputIsInvalid" title="Invalid Input" @close="hideDialog">
 <template #default>
     <p>Unfortunately, at least one input value is invalid</p>
     <p>Please check all inputs and make sure that you entered at least few characters into each input field </p>
@@ -23,7 +23,7 @@
 <input type="url" name="link" id="link" v-model="link">
 </div>
 <div>
-    <base-button type="submit">Add Resource</base-button>
+    <base-button type="submit" @click="">Add Resource</base-button>
 </div>
     </form>
     </base-card>
@@ -39,7 +39,7 @@ data() {
         inputIsInvalid: false
     }
 },
-inject:['resources'],
+inject:['resources','setSelectedTab'],
 methods:{
     addResource(){
         const resource = {
@@ -53,10 +53,10 @@ methods:{
             this.inputIsInvalid = true
         }
         else{
-            this.inputIsInvalid = false
+            this.setSelectedTab('stored-resources')
             this.resources.unshift(resource)
         }        
-        console.log(this.inputIsInvalid);
+        console.log(this.selectedTab);
     },
     hideDialog(){
         this.inputIsInvalid = false
